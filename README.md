@@ -1,6 +1,6 @@
 # Backend de la Aplicación de Maridaje de Vinos
 
-Este es el backend de la aplicación de maridaje de vinos, desarrollado con Symfony. El backend proporciona una API para gestionar vinos, bodegas, puntuaciones y recomendaciones de maridaje.
+Este es el backend de la aplicación de maridaje de vinos, desarrollado con Symfony. El backend proporciona una API para gestionar vinos y recomendaciones de maridaje.
 
 ## Requisitos
 
