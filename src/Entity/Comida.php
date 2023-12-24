@@ -20,6 +20,14 @@ class Comida
     #[ORM\Column(length: 100)]
     private ?string $nombre = null;
 
+    #[ORM\ManyToMany(targetEntity: Vino::class, mappedBy: 'comida')]
+    private Collection $vino;
+
+    public function __construct()
+    {
+        $this->vino = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,4 +52,30 @@ class Comida
         return $this;
     }
 
+    /**
+     * @return Collection<int, Vino>
+     */
+    public function getVino(): Collection
+    {
+        return $this->vino;
+    }
+
+    public function addVino(Vino $vino): static
+    {
+        if (!$this->vino->contains($vino)) {
+            $this->vino->add($vino);
+            $vino->addComida($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVino(Vino $vino): static
+    {
+        if ($this->vino->removeElement($vino)) {
+            $vino->removeComida($this);
+        }
+
+        return $this;
+    }
 }

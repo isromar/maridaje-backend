@@ -23,14 +23,6 @@ class Bodega
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $direccion = null;
 
-    #[ORM\OneToMany(mappedBy: 'bodega_id', targetEntity: Vino::class)]
-    private Collection $vino_id;
-
-    public function __construct()
-    {
-        $this->vino_id = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -67,33 +59,4 @@ class Bodega
         return $this;
     }
 
-    /**
-     * @return Collection<int, Vino>
-     */
-    public function getVinoId(): Collection
-    {
-        return $this->vino_id;
-    }
-
-    public function addVinoId(Vino $vinoId): static
-    {
-        if (!$this->vino_id->contains($vinoId)) {
-            $this->vino_id->add($vinoId);
-            $vinoId->setBodegaId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVinoId(Vino $vinoId): static
-    {
-        if ($this->vino_id->removeElement($vinoId)) {
-            // set the owning side to null (unless already changed)
-            if ($vinoId->getBodegaId() === $this) {
-                $vinoId->setBodegaId(null);
-            }
-        }
-
-        return $this;
-    }
 }

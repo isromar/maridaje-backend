@@ -35,15 +35,15 @@ class Vino
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $variedad_uva = null;
 
-    #[ORM\ManyToMany(targetEntity: Comida::class, inversedBy: 'vino_id')]
-    private Collection $comida_id;
+    #[ORM\ManyToOne]
+    private ?Bodega $bodega = null;
 
-    #[ORM\ManyToOne(inversedBy: 'vino_id')]
-    private ?Bodega $bodega_id = null;
+    #[ORM\ManyToMany(targetEntity: Comida::class, inversedBy: 'vino')]
+    private Collection $comida;
 
     public function __construct()
     {
-        $this->comida_id = new ArrayCollection();
+        $this->comida = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,38 +130,38 @@ class Vino
         return $this;
     }
 
+    public function getBodega(): ?Bodega
+    {
+        return $this->bodega;
+    }
+
+    public function setBodega(?Bodega $bodega): static
+    {
+        $this->bodega = $bodega;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Comida>
      */
-    public function getComidaId(): Collection
+    public function getComida(): Collection
     {
-        return $this->comida_id;
+        return $this->comida;
     }
 
-    public function addComidaId(Comida $comidaId): static
+    public function addComida(Comida $comida): static
     {
-        if (!$this->comida_id->contains($comidaId)) {
-            $this->comida_id->add($comidaId);
+        if (!$this->comida->contains($comida)) {
+            $this->comida->add($comida);
         }
 
         return $this;
     }
 
-    public function removeComidaId(Comida $comidaId): static
+    public function removeComida(Comida $comida): static
     {
-        $this->comida_id->removeElement($comidaId);
-
-        return $this;
-    }
-
-    public function getBodegaId(): ?Bodega
-    {
-        return $this->bodega_id;
-    }
-
-    public function setBodegaId(?Bodega $bodega_id): static
-    {
-        $this->bodega_id = $bodega_id;
+        $this->comida->removeElement($comida);
 
         return $this;
     }
