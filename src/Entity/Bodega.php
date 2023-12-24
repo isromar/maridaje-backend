@@ -2,45 +2,98 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\BodegaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Bodega
- *
- * @ORM\Table(name="bodega")
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: BodegaRepository::class)]
+#[ApiResource]
 class Bodega
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 150)]
+    private ?string $nombre = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $direccion = null;
+
+    #[ORM\OneToMany(mappedBy: 'bodega_id', targetEntity: Vino::class)]
+    private Collection $vino_id;
+
+    public function __construct()
+    {
+        $this->vino_id = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(string $nombre): static
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getDireccion(): ?string
+    {
+        return $this->direccion;
+    }
+
+    public function setDireccion(?string $direccion): static
+    {
+        $this->direccion = $direccion;
+
+        return $this;
+    }
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="nombre", type="string", length=100, nullable=true)
+     * @return Collection<int, Vino>
      */
-    private $nombre;
+    public function getVinoId(): Collection
+    {
+        return $this->vino_id;
+    }
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="direccion", type="string", length=255, nullable=true)
-     */
-    private $direccion;
+    public function addVinoId(Vino $vinoId): static
+    {
+        if (!$this->vino_id->contains($vinoId)) {
+            $this->vino_id->add($vinoId);
+            $vinoId->setBodegaId($this);
+        }
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="telefono", type="string", length=20, nullable=true)
-     */
-    private $telefono;
+        return $this;
+    }
 
+    public function removeVinoId(Vino $vinoId): static
+    {
+        if ($this->vino_id->removeElement($vinoId)) {
+            // set the owning side to null (unless already changed)
+            if ($vinoId->getBodegaId() === $this) {
+                $vinoId->setBodegaId(null);
+            }
+        }
 
+        return $this;
+    }
 }
