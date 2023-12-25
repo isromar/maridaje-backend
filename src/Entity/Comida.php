@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ComidaRepository::class)]
+#[ORM\Table(name: 'Comida')]
+#[ORM\UniqueConstraint(name: 'nombre', columns: ['nombre'])]
 #[ApiResource]
 class Comida
 {
@@ -78,4 +80,5 @@ class Comida
 
         return $this;
     }
+
 }
