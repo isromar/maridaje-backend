@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BodegaRepository::class)]
+#[ORM\Table(name: 'Bodega')]
+#[ORM\UniqueConstraint(name: 'cif', columns: ['cif'])]
 #[ApiResource]
 class Bodega
 {
@@ -22,6 +24,12 @@ class Bodega
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $direccion = null;
+
+    #[ORM\Column(length: 15, nullable: true)]
+    private ?string $telefono = null;
+
+    #[ORM\Column(length: 15)]
+    private ?string $cif = null;
 
     public function getId(): ?int
     {
@@ -55,6 +63,30 @@ class Bodega
     public function setDireccion(?string $direccion): static
     {
         $this->direccion = $direccion;
+
+        return $this;
+    }
+
+    public function getTelefono(): ?string
+    {
+        return $this->telefono;
+    }
+
+    public function setTelefono(?string $telefono): static
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    public function getCif(): ?string
+    {
+        return $this->cif;
+    }
+
+    public function setCif(string $cif): static
+    {
+        $this->cif = $cif;
 
         return $this;
     }
