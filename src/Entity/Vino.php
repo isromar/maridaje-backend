@@ -118,12 +118,12 @@ class Vino
         return $this;
     }
 
-    public function getvariedad_uva(): ?string
+    public function getVariedad_uva(): ?string
     {
         return $this->variedad_uva;
     }
 
-    public function setvariedad_uva(?string $variedad_uva): static
+    public function setVariedad_uva(?string $variedad_uva): static
     {
         $this->variedad_uva = $variedad_uva;
 
