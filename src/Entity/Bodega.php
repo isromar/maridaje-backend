@@ -23,6 +23,9 @@ class Bodega
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $direccion = null;
 
+    #[ORM\Column(length: 15, nullable: true)]
+    private ?string $telefono = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,6 +58,18 @@ class Bodega
     public function setDireccion(?string $direccion): static
     {
         $this->direccion = $direccion;
+
+        return $this;
+    }
+
+    public function getTelefono(): ?string
+    {
+        return $this->telefono;
+    }
+
+    public function setTelefono(?string $telefono): static
+    {
+        $this->telefono = $telefono;
 
         return $this;
     }
