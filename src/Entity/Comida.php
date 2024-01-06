@@ -13,20 +13,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Table(name: 'Comida')]
 #[ORM\UniqueConstraint(name: 'nombre', columns: ['nombre'])]
 #[ApiResource]
-/*
-#[ApiResource(
-    normalizationContext: ['groups' => ['read']],
-    denormalizationContext: ['groups' => ['write']]
-)]
-*/
 class Comida
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    //#[Groups('read')]
     private ?int $id = null;
-
+    
+    #[Groups(['vino.read'])]
     #[ORM\Column(length: 100)]
     private ?string $nombre = null;
 
@@ -62,7 +56,7 @@ class Comida
         return $this;
     }
 
-/**
+    /**
      * @return Collection<int, Vino>
      */
     public function getVino(): Collection

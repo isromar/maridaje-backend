@@ -13,56 +13,48 @@ use App\Enum\DenominacionOrigen;
 
 
 #[ORM\Entity(repositoryClass: VinoRepository::class)]
-#[ApiResource]
-/*
+//#[ApiResource]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read']],
-    denormalizationContext: ['groups' => ['write']]
+    normalizationContext: ['groups' => ['vino.read']],
+    denormalizationContext: ['groups' => ['vino.write']]
 )]
-*/
 class Vino
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    //#[Groups(['read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
-    //#[Groups(['read', 'write'])]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?string $nombre = null;
 
-    //#[ORM\Column(length: 100, nullable: true)]
     #[ORM\Column(type: 'string', enumType: TipoVino::class)]
-    //#[Groups(['read', 'write'])]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?TipoVino  $tipo = null;
 
-    //#[ORM\Column(length: 200, nullable: true)]
     #[ORM\Column(type: 'string', enumType: DenominacionOrigen::class)]
-    //#[Groups(['read', 'write'])]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?DenominacionOrigen $denominacion_origen = null;
 
     #[ORM\Column(length: 150, nullable: true)]
-    //#[Groups(['read', 'write'])]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?string $maduracion = null;
 
     #[ORM\Column(nullable: true)]
-    //#[Groups(['read', 'write'])]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?bool $ecologico = null;
-/*
-    //#[ORM\Column(length: 255, nullable: true)]
-    #[ORM\ManyToMany(targetEntity: VariedadUva::class, inversedBy: 'nombre')]
-    //#[Groups(['read', 'write'])]
-    private ?VariedadUva $variedad_uva = null;
-*/
+
     #[ORM\ManyToOne]
-    //#[Groups(['read', 'write'])]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?Bodega $bodega = null;
 
     #[ORM\ManyToMany(targetEntity: Comida::class, inversedBy: 'vino')]
+    #[Groups(['vino.read', 'vino.write'])]
     private Collection $comida;
 
     #[ORM\ManyToMany(targetEntity: VariedadUva::class, inversedBy: 'vinos')]
+    #[Groups(['vino.read', 'vino.write'])]
     private Collection $variedad_uva;
 
     public function __construct()
@@ -144,19 +136,7 @@ class Vino
 
         return $this;
     }
-/*
-    public function getVariedadUva(): ?string
-    {
-        return $this->variedad_uva;
-    }
 
-    public function setVariedadUva(?string $variedad_uva): static
-    {
-        $this->variedad_uva = $variedad_uva;
-
-        return $this;
-    }
-*/
     public function getBodega(): ?Bodega
     {
         return $this->bodega;
@@ -169,7 +149,7 @@ class Vino
         return $this;
     }
 
-/**
+    /**
      * @return Collection<int, Comida>
      */
     public function getComida(): Collection

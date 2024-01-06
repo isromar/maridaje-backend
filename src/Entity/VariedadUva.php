@@ -7,6 +7,7 @@ use App\Repository\VariedadUvaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: VariedadUvaRepository::class)]
 #[ApiResource]
@@ -17,6 +18,7 @@ class VariedadUva
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['vino.read'])]
     #[ORM\Column(length: 150)]
     private ?string $nombre = null;
 
