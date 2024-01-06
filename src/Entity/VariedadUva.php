@@ -3,33 +3,31 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\ComidaRepository;
+use App\Repository\VariedadUvaRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: ComidaRepository::class)]
-#[ORM\Table(name: 'Comida')]
-#[ORM\UniqueConstraint(name: 'nombre', columns: ['nombre'])]
+#[ORM\Entity(repositoryClass: VariedadUvaRepository::class)]
 #[ApiResource]
-class Comida
+class VariedadUva
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-    
+
     #[Groups(['vino.read'])]
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 150)]
     private ?string $nombre = null;
 
-    #[ORM\ManyToMany(targetEntity: Vino::class, mappedBy: 'comida')]
-    private Collection $vino;
+    #[ORM\ManyToMany(targetEntity: Vino::class, mappedBy: 'variedad_uva')]
+    private Collection $vinos;
 
     public function __construct()
     {
-        $this->vino = new ArrayCollection();
+        $this->vinos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,16 +57,16 @@ class Comida
     /**
      * @return Collection<int, Vino>
      */
-    public function getVino(): Collection
+    public function getVinos(): Collection
     {
-        return $this->vino;
+        return $this->vinos;
     }
 
     public function addVino(Vino $vino): static
     {
-        if (!$this->vino->contains($vino)) {
-            $this->vino->add($vino);
-            $vino->addComida($this);
+        if (!$this->vinos->contains($vino)) {
+            $this->vinos->add($vino);
+            $vino->addVariedadUva($this);
         }
 
         return $this;
@@ -76,11 +74,10 @@ class Comida
 
     public function removeVino(Vino $vino): static
     {
-        if ($this->vino->removeElement($vino)) {
-            $vino->removeComida($this);
+        if ($this->vinos->removeElement($vino)) {
+            $vino->removeVariedadUva($this);
         }
 
         return $this;
     }
-
 }

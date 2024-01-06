@@ -7,9 +7,17 @@ use App\Repository\VinoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Enum\TipoVino;
+use App\Enum\DenominacionOrigen;
+
 
 #[ORM\Entity(repositoryClass: VinoRepository::class)]
-#[ApiResource]
+//#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['vino.read']],
+    denormalizationContext: ['groups' => ['vino.write']]
+)]
 class Vino
 {
     #[ORM\Id]
@@ -18,32 +26,41 @@ class Vino
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?string $nombre = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $tipo = null;
+    #[ORM\Column(type: 'string', enumType: TipoVino::class)]
+    #[Groups(['vino.read', 'vino.write'])]
+    private ?TipoVino  $tipo = null;
 
-    #[ORM\Column(length: 200, nullable: true)]
-    private ?string $denominacion_origen = null;
+    #[ORM\Column(type: 'string', enumType: DenominacionOrigen::class)]
+    #[Groups(['vino.read', 'vino.write'])]
+    private ?DenominacionOrigen $denominacion_origen = null;
 
     #[ORM\Column(length: 150, nullable: true)]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?string $maduracion = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?bool $ecologico = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $variedad_uva = null;
-
     #[ORM\ManyToOne]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?Bodega $bodega = null;
 
     #[ORM\ManyToMany(targetEntity: Comida::class, inversedBy: 'vino')]
+    #[Groups(['vino.read', 'vino.write'])]
     private Collection $comida;
+
+    #[ORM\ManyToMany(targetEntity: VariedadUva::class, inversedBy: 'vinos')]
+    #[Groups(['vino.read', 'vino.write'])]
+    private Collection $variedad_uva;
 
     public function __construct()
     {
         $this->comida = new ArrayCollection();
+        $this->variedad_uva = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,27 +87,25 @@ class Vino
         return $this;
     }
 
-    public function getTipo(): ?string
+    public function getTipo(): ?TipoVino
     {
         return $this->tipo;
     }
 
-    public function setTipo(?string $tipo): static
+    public function setTipo(?TipoVino $tipo): self
     {
         $this->tipo = $tipo;
-
         return $this;
     }
 
-    public function getDenominacionOrigen(): ?string
+    public function getDenominacionOrigen(): ?DenominacionOrigen
     {
         return $this->denominacion_origen;
     }
 
-    public function setDenominacionOrigen(?string $denominacion_origen): static
+    public function setDenominacionOrigen(DenominacionOrigen $denominacion_origen): self
     {
         $this->denominacion_origen = $denominacion_origen;
-
         return $this;
     }
 
@@ -106,26 +121,18 @@ class Vino
         return $this;
     }
 
-    public function isEcologico(): ?bool
+    public function isEcologico(): ?string
     {
-        return $this->ecologico;
+        if ($this->ecologico === 1 || $this->ecologico === true) {
+            return 'sí';
+        } else {
+            return 'no';
+        }
     }
 
     public function setEcologico(?bool $ecologico): static
     {
         $this->ecologico = $ecologico;
-
-        return $this;
-    }
-
-    public function getVariedadUva(): ?string
-    {
-        return $this->variedad_uva;
-    }
-
-    public function setVariedadUva(?string $variedad_uva): static
-    {
-        $this->variedad_uva = $variedad_uva;
 
         return $this;
     }
@@ -162,6 +169,30 @@ class Vino
     public function removeComida(Comida $comida): static
     {
         $this->comida->removeElement($comida);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, VariedadUva>
+     */
+    public function getVariedadUva(): Collection
+    {
+        return $this->variedad_uva;
+    }
+
+    public function addVariedadUva(VariedadUva $variedadUva): static
+    {
+        if (!$this->variedad_uva->contains($variedadUva)) {
+            $this->variedad_uva->add($variedadUva);
+        }
+
+        return $this;
+    }
+
+    public function removeVariedadUva(VariedadUva $variedadUva): static
+    {
+        $this->variedad_uva->removeElement($variedadUva);
 
         return $this;
     }

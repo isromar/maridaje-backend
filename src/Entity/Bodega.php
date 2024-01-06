@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BodegaRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BodegaRepository::class)]
 #[ORM\Table(name: 'Bodega')]
@@ -17,6 +18,7 @@ class Bodega
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['vino.read'])]
     #[ORM\Column(length: 150)]
     private ?string $nombre = null;
 
