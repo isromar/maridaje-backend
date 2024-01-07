@@ -8,4 +8,5 @@ enum DenominacionOrigen: string
     case Alicante = 'Alicante';
     case UtielRequena = 'Utiel-Requena';
     case Castellon = 'Tierras de Castellón';
+    case Cava = 'Cava';
 }

@@ -10,7 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Enum\TipoVino;
 use App\Enum\DenominacionOrigen;
-
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 
 #[ORM\Entity(repositoryClass: VinoRepository::class)]
 //#[ApiResource]
@@ -18,6 +21,12 @@ use App\Enum\DenominacionOrigen;
     normalizationContext: ['groups' => ['vino.read']],
     denormalizationContext: ['groups' => ['vino.write']]
 )]
+#[
+    ApiFilter(OrderFilter::class, properties: ["tipo", "denominacion_origen", "maduracion", "ecologico", "bodega", "denominacionOrigen"]),
+    ApiFilter(SearchFilter::class, properties: ["id"=> "exact", "nombre"=> "partial", "tipo"=> "partial", "denominacion_origen"=> "partial", "maduracion"=> "partial", "bodega"=> "exact", "comida"=> "partial", "denominacionOrigen"=> "partial"]),
+    ApiFilter(BooleanFilter::class, properties: ['ecologico'])
+]
+
 class Vino
 {
     #[ORM\Id]
@@ -45,7 +54,8 @@ class Vino
     #[Groups(['vino.read', 'vino.write'])]
     private ?bool $ecologico = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Bodega::class)]
+    #[ORM\JoinColumn(name: "bodega_id", referencedColumnName: "id")]
     #[Groups(['vino.read', 'vino.write'])]
     private ?Bodega $bodega = null;
 
