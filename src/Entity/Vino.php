@@ -8,9 +8,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Enum\TipoVino;
-use App\Enum\DenominacionOrigen;
-
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 
 #[ORM\Entity(repositoryClass: VinoRepository::class)]
 //#[ApiResource]
@@ -18,6 +19,12 @@ use App\Enum\DenominacionOrigen;
     normalizationContext: ['groups' => ['vino.read']],
     denormalizationContext: ['groups' => ['vino.write']]
 )]
+#[
+    ApiFilter(OrderFilter::class, properties: ["tipo", "denominacion_origen", "maduracion", "ecologico", "bodega", "denominacionOrigen"]),
+    ApiFilter(SearchFilter::class, properties: ["id"=> "exact", "nombre"=> "partial", "tipo_vino"=> "partial", "denominacion_origen"=> "partial", "maduracion"=> "partial", "bodega"=> "exact", "comida"=> "partial", "tipoVino"=> "partial", "denominacionOrigen"=> "partial"]),
+    ApiFilter(BooleanFilter::class, properties: ['ecologico'])
+]
+
 class Vino
 {
     #[ORM\Id]
@@ -28,14 +35,6 @@ class Vino
     #[ORM\Column(length: 150)]
     #[Groups(['vino.read', 'vino.write'])]
     private ?string $nombre = null;
-
-    #[ORM\Column(type: 'string', enumType: TipoVino::class)]
-    #[Groups(['vino.read', 'vino.write'])]
-    private ?TipoVino  $tipo = null;
-
-    #[ORM\Column(type: 'string', enumType: DenominacionOrigen::class)]
-    #[Groups(['vino.read', 'vino.write'])]
-    private ?DenominacionOrigen $denominacion_origen = null;
 
     #[ORM\Column(length: 150, nullable: true)]
     #[Groups(['vino.read', 'vino.write'])]
@@ -56,6 +55,15 @@ class Vino
     #[ORM\ManyToMany(targetEntity: VariedadUva::class, inversedBy: 'vinos')]
     #[Groups(['vino.read', 'vino.write'])]
     private Collection $variedad_uva;
+
+    #[ORM\ManyToOne]
+    #[Groups(['vino.read', 'vino.write'])]
+    private ?DenominacionOrigen $denominacionOrigen = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['vino.read', 'vino.write'])]
+    private ?TipoVino $tipoVino = null;
 
     public function __construct()
     {
@@ -84,28 +92,6 @@ class Vino
     {
         $this->nombre = $nombre;
 
-        return $this;
-    }
-
-    public function getTipo(): ?TipoVino
-    {
-        return $this->tipo;
-    }
-
-    public function setTipo(?TipoVino $tipo): self
-    {
-        $this->tipo = $tipo;
-        return $this;
-    }
-
-    public function getDenominacionOrigen(): ?DenominacionOrigen
-    {
-        return $this->denominacion_origen;
-    }
-
-    public function setDenominacionOrigen(DenominacionOrigen $denominacion_origen): self
-    {
-        $this->denominacion_origen = $denominacion_origen;
         return $this;
     }
 
@@ -193,6 +179,30 @@ class Vino
     public function removeVariedadUva(VariedadUva $variedadUva): static
     {
         $this->variedad_uva->removeElement($variedadUva);
+
+        return $this;
+    }
+
+    public function getDenominacionOrigen(): ?DenominacionOrigen
+    {
+        return $this->denominacionOrigen;
+    }
+
+    public function setDenominacionOrigen(?DenominacionOrigen $denominacionOrigen): static
+    {
+        $this->denominacionOrigen = $denominacionOrigen;
+
+        return $this;
+    }
+
+    public function getTipoVino(): ?TipoVino
+    {
+        return $this->tipoVino;
+    }
+
+    public function setTipoVino(?TipoVino $tipoVino): static
+    {
+        $this->tipoVino = $tipoVino;
 
         return $this;
     }
