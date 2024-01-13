@@ -4,9 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TipoVinoRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TipoVinoRepository::class)]
 #[ApiResource]
@@ -17,16 +16,9 @@ class TipoVino
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['vino.read', 'vino.write'])]
     #[ORM\Column(length: 100)]
-    private ?string $Nombre = null;
-
-    #[ORM\OneToMany(mappedBy: 'tipoVino', targetEntity: Vino::class)]
-    private Collection $vinos;
-
-    public function __construct()
-    {
-        $this->vinos = new ArrayCollection();
-    }
+    private ?string $nombre = null;
 
     public function getId(): ?int
     {
@@ -42,43 +34,14 @@ class TipoVino
 
     public function getNombre(): ?string
     {
-        return $this->Nombre;
+        return $this->nombre;
     }
 
-    public function setNombre(string $Nombre): static
+    public function setNombre(string $nombre): static
     {
-        $this->Nombre = $Nombre;
+        $this->nombre = $nombre;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Vino>
-     */
-    public function getVinos(): Collection
-    {
-        return $this->vinos;
-    }
-
-    public function addVino(Vino $vino): static
-    {
-        if (!$this->vinos->contains($vino)) {
-            $this->vinos->add($vino);
-            $vino->setTipoVino($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVino(Vino $vino): static
-    {
-        if ($this->vinos->removeElement($vino)) {
-            // set the owning side to null (unless already changed)
-            if ($vino->getTipoVino() === $this) {
-                $vino->setTipoVino(null);
-            }
-        }
-
-        return $this;
-    }
 }

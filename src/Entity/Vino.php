@@ -21,7 +21,7 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 )]
 #[
     ApiFilter(OrderFilter::class, properties: ["tipo", "denominacion_origen", "maduracion", "ecologico", "bodega", "denominacionOrigen"]),
-    ApiFilter(SearchFilter::class, properties: ["id"=> "exact", "nombre"=> "partial", "tipo"=> "partial", "denominacion_origen"=> "partial", "maduracion"=> "partial", "bodega"=> "exact", "comida"=> "partial", "denominacionOrigen"=> "partial"]),
+    ApiFilter(SearchFilter::class, properties: ["id"=> "exact", "nombre"=> "partial", "tipo_vino"=> "partial", "denominacion_origen"=> "partial", "maduracion"=> "partial", "bodega"=> "exact", "comida"=> "partial", "tipoVino"=> "partial", "denominacionOrigen"=> "partial"]),
     ApiFilter(BooleanFilter::class, properties: ['ecologico'])
 ]
 
@@ -57,10 +57,12 @@ class Vino
     private Collection $variedad_uva;
 
     #[ORM\ManyToOne]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?DenominacionOrigen $denominacionOrigen = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?TipoVino $tipoVino = null;
 
     public function __construct()
