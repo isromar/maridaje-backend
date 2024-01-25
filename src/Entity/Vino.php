@@ -20,9 +20,8 @@ use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
     denormalizationContext: ['groups' => ['vino.write']]
 )]
 #[
-    ApiFilter(OrderFilter::class, properties: ["tipo", "denominacion_origen", "maduracion", "ecologico", "bodega", "denominacionOrigen"]),
-    ApiFilter(SearchFilter::class, properties: ["id"=> "exact", "nombre"=> "partial", "tipo_vino"=> "partial", "denominacion_origen"=> "partial", "maduracion"=> "partial", "bodega"=> "exact", "comida"=> "partial", "tipoVino"=> "partial", "denominacionOrigen"=> "partial"]),
-    ApiFilter(BooleanFilter::class, properties: ['ecologico'])
+    ApiFilter(OrderFilter::class, properties: ["nombre", "tipo"]),
+    ApiFilter(SearchFilter::class, properties: ["nombre"=> "partial", "comida.nombre"=> "partial"])
 ]
 
 class Vino

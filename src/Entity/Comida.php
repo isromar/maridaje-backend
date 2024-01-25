@@ -8,16 +8,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: ComidaRepository::class)]
 #[ORM\Table(name: 'Comida')]
 #[ORM\UniqueConstraint(name: 'nombre', columns: ['nombre'])]
 #[ApiResource]
-#[
-    ApiFilter(SearchFilter::class, properties: ["id"=> "exact", "nombre"=> "partial"])
-]
 class Comida
 {
     #[ORM\Id]
