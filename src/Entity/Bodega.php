@@ -6,11 +6,18 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BodegaRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: BodegaRepository::class)]
 #[ORM\Table(name: 'Bodega')]
 #[ORM\UniqueConstraint(name: 'cif', columns: ['cif'])]
 #[ApiResource]
+#[
+    ApiFilter(OrderFilter::class, properties: ["cif"]),
+    ApiFilter(SearchFilter::class, properties: ["cif"=> "exact"])
+]
 class Bodega
 {
     #[ORM\Id]

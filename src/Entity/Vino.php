@@ -20,7 +20,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 )]
 #[
     ApiFilter(OrderFilter::class, properties: ["nombre", "tipo"]),
-    ApiFilter(SearchFilter::class, properties: ["nombre"=> "partial", "comida.nombre"=> "partial"])
+    ApiFilter(SearchFilter::class, properties: ["nombre"=> "partial", "comida.nombre"=> "partial", "bodega.id"=> "exact"])
 ]
 
 class Vino
