@@ -38,9 +38,9 @@ class Vino
     #[Groups(['vino.read', 'vino.write'])]
     private ?string $maduracion = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(nullable: false)]
     #[Groups(['vino.read', 'vino.write'])]
-    private ?bool $ecologico = null;
+    private bool $ecologico = false;
 
     #[ORM\ManyToOne]
     #[Groups(['vino.read', 'vino.write'])]
@@ -100,7 +100,7 @@ class Vino
 
     public function setMaduracion(?string $maduracion): static
     {
-        $this->maduracion = $maduracion;
+        $this->maduracion = $maduracion ?? 'No indicado';
 
         return $this;
     }
@@ -188,6 +188,11 @@ class Vino
 
     public function setDenominacionOrigen(?DenominacionOrigen $denominacionOrigen): static
     {
+        if (!$denominacionOrigen) {
+            $denominacionOrigen = new DenominacionOrigen();
+            $denominacionOrigen->setNombre('No indicado');
+        }
+
         $this->denominacionOrigen = $denominacionOrigen;
 
         return $this;
