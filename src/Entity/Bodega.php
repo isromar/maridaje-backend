@@ -41,6 +41,14 @@ class Bodega
     #[ORM\Column(length: 15)]
     private ?string $cif = null;
 
+    #[Groups(['vino.read'])]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $web = null;
+
+    #[Groups(['vino.read'])]
+    #[ORM\Column(length: 255, nullable: false)]
+    private ?string $password = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -101,4 +109,27 @@ class Bodega
         return $this;
     }
 
+    public function getWeb(): ?string
+    {
+        return $this->web;
+    }
+
+    public function setWeb(?string $web): static
+    {
+        $this->web = $web;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
 }

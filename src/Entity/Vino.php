@@ -22,7 +22,6 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
     ApiFilter(OrderFilter::class, properties: ["nombre", "tipo"]),
     ApiFilter(SearchFilter::class, properties: ["nombre"=> "partial", "comida.nombre"=> "partial", "bodega.id"=> "exact"])
 ]
-
 class Vino
 {
     #[ORM\Id]
@@ -62,6 +61,10 @@ class Vino
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['vino.read', 'vino.write'])]
     private ?TipoVino $tipoVino = null;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    #[Groups(['vino.read', 'vino.write'])]
+    private ?float $precio = null;
 
     public function __construct()
     {
@@ -210,4 +213,15 @@ class Vino
         return $this;
     }
 
+    public function getPrecio(): ?float
+    {
+        return $this->precio;
+    }
+
+    public function setPrecio(?float $precio): static
+    {
+        $this->precio = $precio;
+
+        return $this;
+    }
 }
