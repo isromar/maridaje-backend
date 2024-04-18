@@ -191,11 +191,6 @@ class Vino
 
     public function setDenominacionOrigen(?DenominacionOrigen $denominacionOrigen): static
     {
-        if (!$denominacionOrigen) {
-            $denominacionOrigen = new DenominacionOrigen();
-            $denominacionOrigen->setNombre('No indicado');
-        }
-
         $this->denominacionOrigen = $denominacionOrigen;
 
         return $this;
