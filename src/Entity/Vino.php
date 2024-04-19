@@ -13,7 +13,6 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: VinoRepository::class)]
-//#[ApiResource]
 #[ApiResource(
     normalizationContext: ['groups' => ['vino.read']],
     denormalizationContext: ['groups' => ['vino.write']]
@@ -45,19 +44,19 @@ class Vino
     #[Groups(['vino.read', 'vino.write'])]
     private ?Bodega $bodega = null;
 
-    #[ORM\ManyToMany(targetEntity: Comida::class, inversedBy: 'vino')]
+    #[ORM\ManyToMany(targetEntity: Comida::class, inversedBy: 'vino', cascade: ['persist'])]
     #[Groups(['vino.read', 'vino.write'])]
     private Collection $comida;
 
-    #[ORM\ManyToMany(targetEntity: VariedadUva::class, inversedBy: 'vinos')]
+    #[ORM\ManyToMany(targetEntity: VariedadUva::class, inversedBy: 'vinos', cascade: ['persist'])]
     #[Groups(['vino.read', 'vino.write'])]
     private Collection $variedad_uva;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[Groups(['vino.read', 'vino.write'])]
     private ?DenominacionOrigen $denominacionOrigen = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['vino.read', 'vino.write'])]
     private ?TipoVino $tipoVino = null;
@@ -148,6 +147,7 @@ class Vino
     {
         if (!$this->comida->contains($comida)) {
             $this->comida->add($comida);
+            $comida->addVino($this);
         }
 
         return $this;

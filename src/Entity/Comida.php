@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ComidaRepository::class)]
-#[ORM\Table(name: 'Comida')]
 #[ORM\UniqueConstraint(name: 'nombre', columns: ['nombre'])]
 #[ApiResource]
 class Comida
