@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ComidaRepository::class)]
 #[ORM\UniqueConstraint(name: 'nombre', columns: ['nombre'])]
+#[ORM\Table(name: "comida")]
 #[ApiResource]
 class Comida
 {
@@ -23,7 +24,7 @@ class Comida
     #[ORM\Column(length: 100)]
     private ?string $nombre = null;
 
-    #[ORM\ManyToMany(targetEntity: Vino::class, mappedBy: 'comida')]
+    #[ORM\ManyToMany(targetEntity: Vino::class, mappedBy: 'comida', cascade: ['persist'])]
     private Collection $vino;
 
     public function __construct()

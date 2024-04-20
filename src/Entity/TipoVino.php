@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TipoVinoRepository::class)]
+#[ORM\Table(name: "tipo_vino")]
 #[ApiResource]
 class TipoVino
 {

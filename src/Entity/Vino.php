@@ -13,6 +13,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: VinoRepository::class)]
+#[ORM\Table(name: "vino")]
 #[ApiResource(
     normalizationContext: ['groups' => ['vino.read']],
     denormalizationContext: ['groups' => ['vino.write']]

@@ -12,6 +12,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: BodegaRepository::class)]
 #[ORM\UniqueConstraint(name: 'cif', columns: ['cif'])]
+#[ORM\Table(name: "bodega")]
 #[ApiResource]
 #[
     ApiFilter(OrderFilter::class, properties: ["cif"]),
