@@ -1,4 +1,5 @@
 <?php
+// api/src/Entity/Vino.php
 
 namespace App\Entity;
 
@@ -37,15 +38,18 @@ class Vino
     #[Groups(['vino.read', 'vino.write'])]
     private ?string $maduracion = null;
 
-    #[ORM\Column(nullable: false)]
     #[Groups(['vino.read', 'vino.write'])]
     private bool $ecologico = false;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)]
     #[Groups(['vino.read', 'vino.write'])]
     private ?Bodega $bodega = null;
 
     #[ORM\ManyToMany(targetEntity: Comida::class, inversedBy: 'vino', cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'vino_comida')]
+    #[ORM\JoinColumn(name: 'vino_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\InverseJoinColumn(name: 'comida_id', referencedColumnName: 'id', nullable: false)]
     #[Groups(['vino.read', 'vino.write'])]
     private Collection $comida;
 
@@ -54,6 +58,7 @@ class Vino
     private Collection $variedad_uva;
 
     #[ORM\ManyToOne(cascade: ['persist'])]
+    #[ORM\JoinColumn]
     #[Groups(['vino.read', 'vino.write'])]
     private ?DenominacionOrigen $denominacionOrigen = null;
 

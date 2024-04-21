@@ -1,5 +1,5 @@
 <?php
-
+// api/src/Entity/Comida.php
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
@@ -19,11 +19,10 @@ class Comida
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-    
-    #[Groups(['vino.read'])]
+
     #[ORM\Column(length: 100)]
     private ?string $nombre = null;
-
+ 
     #[ORM\ManyToMany(targetEntity: Vino::class, mappedBy: 'comida', cascade: ['persist'])]
     private Collection $vino;
 
