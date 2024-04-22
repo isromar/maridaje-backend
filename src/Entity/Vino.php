@@ -29,6 +29,7 @@ class Vino
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['vino.read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]

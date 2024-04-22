@@ -17,6 +17,7 @@ class VariedadUva
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['vino.read'])]
     private ?int $id = null;
 
     #[Groups(['vino.read', 'vino.write'])]
