@@ -17,7 +17,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 #[ORM\Table(name: "vino")]
 #[ApiResource(
     normalizationContext: ['groups' => ['vino.read']],
-    denormalizationContext: ['groups' => ['vino.write']],
+    denormalizationContext: ['groups' => ['vino.write']]
 )]
 #[
     ApiFilter(OrderFilter::class, properties: ["nombre", "tipo"]),
@@ -150,14 +150,14 @@ class Vino
         return $this->comida;
     }
 
-    public function addComida(Comida $comida)
+    public function addComida(Comida $comida): static
     {
         if (!$this->comida->contains($comida)) {
             $this->comida->add($comida);
             $comida->addVino($this);
         }
 
-        return $comida;
+        return $this;
     }
 
     public function removeComida(Comida $comida): static
