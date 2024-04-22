@@ -25,7 +25,6 @@ class Comida
     private ?string $nombre = null;
  
     #[ORM\ManyToMany(targetEntity: Vino::class, mappedBy: 'comida', cascade: ['persist'])]
-    #[Groups(['vino.read', 'vino.write'])]
     private Collection $vino;
 
     public function __construct()
