@@ -19,7 +19,7 @@ class VariedadUva
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['vino.read'])]
+    #[Groups(['vino.read', 'vino.write'])]
     #[ORM\Column(length: 150)]
     private ?string $nombre = null;
 

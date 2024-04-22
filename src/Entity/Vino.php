@@ -17,12 +17,13 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 #[ORM\Table(name: "vino")]
 #[ApiResource(
     normalizationContext: ['groups' => ['vino.read']],
-    denormalizationContext: ['groups' => ['vino.write']]
+    denormalizationContext: ['groups' => ['vino.write']],
 )]
 #[
     ApiFilter(OrderFilter::class, properties: ["nombre", "tipo"]),
     ApiFilter(SearchFilter::class, properties: ["nombre"=> "partial", "comida.nombre"=> "partial", "bodega.id"=> "exact"])
 ]
+#[ApiResource(normalizationContext: ['jsonld_embed_context' => true])]
 class Vino
 {
     #[ORM\Id]
@@ -44,7 +45,7 @@ class Vino
     #[ORM\ManyToOne(cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['vino.read', 'vino.write'])]
-    private ?Bodega $bodega = null;
+    private ?Bodega $bodega;
 
     #[ORM\ManyToMany(targetEntity: Comida::class, inversedBy: 'vino', cascade: ['persist'])]
     #[ORM\JoinTable(name: 'vino_comida')]
@@ -149,14 +150,14 @@ class Vino
         return $this->comida;
     }
 
-    public function addComida(Comida $comida): static
+    public function addComida(Comida $comida)
     {
         if (!$this->comida->contains($comida)) {
             $this->comida->add($comida);
             $comida->addVino($this);
         }
 
-        return $this;
+        return $comida;
     }
 
     public function removeComida(Comida $comida): static

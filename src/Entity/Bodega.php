@@ -25,27 +25,27 @@ class Bodega
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['vino.read'])]
+    #[Groups(['vino.read', 'vino.write'])]
     #[ORM\Column(length: 150)]
     private ?string $nombre = null;
 
-    #[Groups(['vino.read'])]
+    #[Groups(['vino.read', 'vino.write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $direccion = null;
 
-    #[Groups(['vino.read'])]
+    #[Groups(['vino.read', 'vino.write'])]
     #[ORM\Column(length: 15, nullable: true)]
     private ?string $telefono = null;
 
-    #[Groups(['vino.read'])]
+    #[Groups(['vino.read', 'vino.write'])]
     #[ORM\Column(length: 15)]
     private ?string $cif = null;
 
-    #[Groups(['vino.read'])]
+    #[Groups(['vino.read', 'vino.write'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $web = null;
 
-    #[Groups(['vino.read'])]
+    #[Groups(['vino.read', 'vino.write'])]
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $password = null;
 
