@@ -21,9 +21,11 @@ class Comida
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['vino.read', 'vino.write'])]
     private ?string $nombre = null;
  
     #[ORM\ManyToMany(targetEntity: Vino::class, mappedBy: 'comida', cascade: ['persist'])]
+    #[Groups(['vino.read', 'vino.write'])]
     private Collection $vino;
 
     public function __construct()
