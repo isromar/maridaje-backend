@@ -1,10 +1,10 @@
 RewriteEngine On
 RewriteBase /maridaje/api/
 
-# Si la solicitud es un archivo o directorio existente, no redirigir
+# If the requested file or directory exists, serve it directly
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Redirigir todas las demás solicitudes a public/index.php
-RewriteRule ^ public/index.php [L]
+# Otherwise, rewrite all requests to public/index.php
+RewriteRule ^ server.php [L]
