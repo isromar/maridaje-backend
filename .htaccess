@@ -3,8 +3,9 @@ RewriteEngine On
 
 # Configurar encabezados CORS
 <IfModule mod_headers.c>
-    Header always set Access-Control-Allow-Origin "http://localhost:3000"
+        Header always set Access-Control-Allow-Origin "https://isabelrodenas.es"
 </IfModule>
+#Header always set Access-Control-Allow-Origin "http://localhost:3000"
 
 # Permitir otros encabezados y métodos CORS si es necesario
 <IfModule mod_headers.c>
@@ -25,3 +26,4 @@ RewriteRule ^ - [L]
 
 # Redirigir todas las demás solicitudes a index.html
 RewriteRule ^ index.html [L]
+
